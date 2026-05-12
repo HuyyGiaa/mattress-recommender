@@ -11,12 +11,12 @@ from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-OUTPUT_JSON = "khonemtonghop.json"
+OUTPUT_JSON = "khonemtonghop_2.json"
 CATEGORIES = [
-    {"category": "Cao su thiên nhiên", "url": "https://khonemtonghop.com/nem-cao-su/"},
-    {"category": "Bông ép", "url": "https://khonemtonghop.com/nem-bong-ep/"},
-    {"category": "Foam", "url": "https://khonemtonghop.com/nem-foam/"},
-    {"category": "Lò xo", "url": "https://khonemtonghop.com/nem-lo-xo/"}
+    {"name": "Cao su thiên nhiên", "url": "https://khonemtonghop.com/nem-cao-su/"},
+    {"name": "Bông ép", "url": "https://khonemtonghop.com/nem-bong-ep/"},
+    {"name": "Foam", "url": "https://khonemtonghop.com/nem-foam/"},
+    {"name": "Lò xo", "url": "https://khonemtonghop.com/nem-lo-xo/"}
 ]
 
 BRAND_ORIGIN_MAP = {
@@ -165,6 +165,10 @@ def extract_deal(card):
 def scrape_details(driver):
     description = ""
     price = None
+    brand = None
+    scraped_material = None
+    scraped_category = None
+    
     print("Đang cào mô tả sản phẩm")
     try:
         description = driver.find_element(
@@ -183,93 +187,121 @@ def scrape_details(driver):
         "firmness": None,
     }
     
+    print("Đang cào các đặc điểm chi tiết")
     try:
         # Trỏ đích danh vào bảng nằm trong class product-short-description
-        table_rows = driver.find_elements(By.CSS_SELECTOR, ".product-short-description table tr")
-        
-        for row in table_rows:
-            # Tìm tất cả các thẻ td trong dòng (tr) này
-            cols = row.find_elements(By.CSS_SELECTOR, "td")
-            
-            # Phải đảm bảo dòng đó có đủ 2 cột thì mới xử lý
-            if len(cols) == 2:
-                label = cols[0].text.strip().lower() # Cột 1: Tiêu đề
-                value = cols[1].text.strip()         # Cột 2: Giá trị
+        try:
+            table_rows = driver.find_elements(By.CSS_SELECTOR, ".product-short-description table tbody tr")
+        except Exception as e:
+            print(f"Lỗi khi cào bảng đặc điểm {e}")
 
-                # 1. Bắt Thương Hiệu
-                if "thương hiệu" in label or "hãng" in label:
-                    brand = value
+        for row in table_rows:
+            try:
+                # Tìm tất cả các thẻ td trong dòng (tr) này
+                cols = row.find_elements(By.CSS_SELECTOR, "td")
                 
-                # 2. Bắt Độ Cứng
-                elif "độ cứng" in label:
-                    firmness = value
-                
-                # 3. Bắt Bảo Hành và quy đổi ra tháng
-                elif "bảo hành" in label:
-                    try:
-                        # Đưa về chữ thường, xóa chữ "năm", và cắt khoảng trắng thừa
-                        clean_value = value.lower().replace("năm", "").strip()
-                        warranty = int(clean_value) * 12
-                    except ValueError:
-                        print(f"Bỏ qua quy đổi bảo hành vì định dạng lạ: {value}")
-                        warranty = value 
+                # Phải đảm bảo dòng đó có đủ 2 cột thì mới xử lý
+                if len(cols) == 2:
+                    label = cols[0].text.strip().lower() # Cột 1: Tiêu đề
+                    value = cols[1].text.strip()         # Cột 2: Giá trị
+                    
+                    # Cào Category
+                    if "loại sản phẩm" in label:
+                        scraped_category = value
+                        
+                    # Cào Material    
+                    elif "chất liệu" in label:
+                        scraped_material = value
+                        
+                    # Cào Thương Hiệu
+                    elif "thương hiệu" in label or "Hãng" in label:
+                        brand = value
+                    
+                    # Cào Độ Cứng
+                    elif "độ cứng" in label:
+                        specifications["firmness"] = value
+                    
+                    # Cào Bảo Hành và quy đổi ra tháng
+                    elif "bảo hành" in label:
+                        try:
+                            # Đưa về chữ thường, xóa chữ "năm", và cắt khoảng trắng thừa
+                            clean_value = value.lower().replace("năm", "").strip()
+                            specifications["warranty"] = int(clean_value) * 12
+                        except ValueError:
+                            print(f"Bỏ qua quy đổi bảo hành vì định dạng lạ: {value}")
+                            specifications["warranty"] = value
+            except Exception as e:
+                print(f"Lỗi khi lấy thông tin sản phẩm chi tiết: {e}") 
                         
     except Exception as e:
         print(f"Lỗi khi cào bảng thông số: {e}")
 
     brand_lower = brand.lower()
+    origin = None
     for b_key, b_origin in BRAND_ORIGIN_MAP.items():
         if b_key in brand_lower: 
             origin = b_origin
             brand = b_key.title() 
             break
+    specifications["origin"] = origin
 
     variations_data = []
     
-    sizes_count = len(driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_kich-thuoc] div.ux-swatch__text"))
-    thickness_count = len(driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_do-day] div.ux-swatch__text"))
+    sizes_count = len(driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_kich-thuoc] div.ux-swatch"))
+    thickness_count = len(driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_do-day] div.ux-swatch"))
 
     for i in range(sizes_count):
         try:
             sizes = driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_kich-thuoc] div.ux-swatch")
             size_btn = sizes[i]
-            size_name = size_btn.get_attribute("data_value")
+            size_name = size_btn.get_attribute("data-value")
             
-            if size_btn.get_attribute("aria-checked") == True:
-                continue
+            # if size_btn.get_attribute("aria-checked") == "true":
+            #     continue
             
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", size_btn)
-            driver.execute_script("arguments[0].click();", size_btn)
-            time.sleep(1.5) 
+            if size_btn.get_attribute("aria-checked") != "true":
+                driver.execute_script("arguments[0].click();", size_btn)
+                time.sleep(1.5)
+            
+            # driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", size_btn)
+            # driver.execute_script("arguments[0].click();", size_btn)
+            # time.sleep(1.5) 
             
             #TH1: Có nút độ dày
             if thickness_count > 0:
                 for j in range(thickness_count):
                     try:
-                        thicknesses = driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_do-day] div.ux_swatch")
+                        thicknesses = driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_do-day] div.ux-swatch")
                         
                         # if j >= len(current_thicknesses):
                         #     break 
                         
                         thickness_btn = thicknesses[j]
-                        thickness_name = thickness_btn.get_attribute("data_value")
+                        thickness_name = thickness_btn.get_attribute("data-value")
                     
-                        if thickness_btn.get_attribute("aria-checked") == True:
-                            continue
+                        # if thickness_btn.get_attribute("aria-checked") == "true":
+                        #     continue
+                        
+                        if thickness_btn.get_attribute("aria-checked") != "true":
+                            driver.execute_script("arguments[0].click();", thickness_btn)
+                            time.sleep(1.5)
                         
                         # click độ dày
-                        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", thickness_btn)
-                        driver.execute_script("arguments[0].click();", thickness_btn)
-                        time.sleep(2)
+                        # driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", thickness_btn)
+                        # driver.execute_script("arguments[0].click();", thickness_btn)
+                        # time.sleep(2)
                         try:
-                            current_price = int(driver.find_element(By.CSS_SELECTOR, ".woocommerce-Price-amount").text.strip())
+                            raw_price = driver.find_element(By.CSS_SELECTOR, "ins .woocommerce-Price-amount").text.strip()
+                            current_price = int(re.sub(r'\D', '', raw_price))
                         except Exception as e:
                             current_price = 0
+                            print(f"Lỗi khi cào giá hiện tại của sản phẩm: {e}")
                         
                         try:
                             current_sku = driver.find_element(By.CSS_SELECTOR, ".sku").text.strip()
                         except Exception as e:
                             current_sku = None
+                            print(f"Lỗi khi cào sku hiện tại của sản phẩm: {e}")
                             
                         variations_data.append({
                                 "size": size_name,
@@ -285,14 +317,17 @@ def scrape_details(driver):
             else:
                 try:
                     try:
-                        current_price = int(driver.find_element(By.CSS_SELECTOR, ".woocommerce-Price-amount").text.strip())
+                        raw_price = driver.find_element(By.CSS_SELECTOR, ".woocommerce-Price-amount").text.strip()
+                        current_price = int(re.sub(r'\D', '', raw_price))
                     except Exception as e:
                         current_price = 0
+                        print(f"Lỗi khi cào giá hiện tại của sản phẩm: {e}")
                     
                     try:
                         current_sku = driver.find_element(By.CSS_SELECTOR, ".sku").text.strip()
                     except Exception as e:
                         current_sku = None
+                        print(f"Lỗi khi cào sku hiện tại của sản phẩm: {e}")
                         
                     variations_data.append({
                             "size": size_name,
@@ -311,7 +346,8 @@ def scrape_details(driver):
         "specifications": specifications,
         "variations": variations_data,
         "brand": brand,
-        "material_type": None
+        "material_type": scraped_material,
+        "category": scraped_category
     }
 
 def go_to_next_page(driver):
@@ -369,8 +405,8 @@ def main():
         # PHASE 1: CÀO LẤY THÔNG TIN CƠ BẢN VÀ LINK Ở CÁC TRANG DANH MỤC
         # =================================================================
         for cat in CATEGORIES: # Dùng mảng CATEGORIES (chứa name và url) thay vì CATEGORIES_URL
-            cat_name = cat["category"]
-            cat_url = cat["url"]
+            cat_name = cat.get("name")
+            cat_url = cat.get("url")
             
             print(f"\n[PHASE 1] Đang mở trang danh mục: {cat_name} | {cat_url}")
             driver.get(cat_url)
@@ -437,11 +473,14 @@ def main():
             product["variations"] = detail_data["variations"]
             product["brand"] = detail_data["brand"]
             product["specifications"] = detail_data["specifications"]
-            scraped_material = detail_data["material_type"]
-            if scraped_material:
-                product["material_type"] = scraped_material
-            else:
-                product["material_type"] = product.get("category", "Chưa phân loại")
+            scraped_cat = detail_data.get("scraped_category")
+            scraped_mat = detail_data.get("material_type")
+
+            final_category = scraped_cat if scraped_cat else product.get("category")
+            final_material = scraped_mat if scraped_mat else final_category
+
+            product["category"] = final_category
+            product["material_type"] = final_material
             
         print(f"\nTổng sản phẩm thu được sau cùng: {len(all_products)}")
 
@@ -452,6 +491,40 @@ def main():
 
     save_to_json(all_products, OUTPUT_JSON)
 
+def test_single_product(url):
+    print(f"🔄 Đang mở trình duyệt để test link:\n{url}\n")
+    
+    # 1. Khởi tạo trình duyệt (Tùy chỉnh theo cách bạn đang dùng)
+    options = webdriver.ChromeOptions()
+    # options.add_argument("--headless") # Bỏ comment dòng này nếu bạn không muốn web hiển thị lên
+    driver = webdriver.Chrome(options=options) 
+    
+    try:
+        # 2. Truy cập link
+        driver.get(url)
+        time.sleep(3) # Chờ 3s cho web load đầy đủ các JS
+        
+        # 3. Gọi hàm scrape_details mà bạn vừa viết
+        print("Đang tiến hành cào dữ liệu...")
+        scraped_data = scrape_details(driver)
+        
+        # 4. In kết quả ra dạng JSON (căn lề indent=4 cho dễ đọc)
+        print("\n" + "="*50)
+        print("🟢 KẾT QUẢ CÀO DỮ LIỆU:")
+        print("="*50)
+        print(json.dumps(scraped_data, ensure_ascii=False, indent=4))
+        print("="*50)
+        
+    except Exception as e:
+        print(f"🔴 Có lỗi xảy ra trong quá trình test: {e}")
+        
+    finally:
+        # 5. Luôn luôn nhớ dọn dẹp tắt trình duyệt dù code có lỗi hay không
+        driver.quit()
+        print("\nĐã đóng trình duyệt!")
+
 if __name__ == "__main__":
     main()
-
+    # test_url = "https://khonemtonghop.com/nem-cao-su-thien-nhien-beetex-cool-massage/"
+    # test_single_product(test_url)
+    
