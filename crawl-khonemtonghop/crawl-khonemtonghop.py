@@ -11,7 +11,7 @@ from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-OUTPUT_JSON = "khonemtonghop_2.json"
+OUTPUT_JSON = "khonemtonghop_3.json"
 CATEGORIES = [
     {"name": "Cao su thiên nhiên", "url": "https://khonemtonghop.com/nem-cao-su/"},
     {"name": "Bông ép", "url": "https://khonemtonghop.com/nem-bong-ep/"},
@@ -254,61 +254,65 @@ def scrape_details(driver):
         try:
             sizes = driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_kich-thuoc] div.ux-swatch")
             size_btn = sizes[i]
-            size_name = size_btn.get_attribute("data-value")
             
-            # if size_btn.get_attribute("aria-checked") == "true":
-            #     continue
-            
-            if size_btn.get_attribute("aria-checked") != "true":
+            if i == 0 and size_btn.get_attribute("aria-checked") == "true":
                 driver.execute_script("arguments[0].click();", size_btn)
-                time.sleep(1.5)
+                time.sleep(0.5)
             
-            # driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", size_btn)
-            # driver.execute_script("arguments[0].click();", size_btn)
-            # time.sleep(1.5) 
+            if size_btn.get_attribute("aria-disabled") == "true":
+                    continue
+            
+            if size_btn.get_attribute("aria-disabled") == "false":
+                driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", size_btn)
+                driver.execute_script("arguments[0].click();", size_btn)
+                size_name = size_btn.get_attribute("data-value")
+                time.sleep(1)
             
             #TH1: Có nút độ dày
             if thickness_count > 0:
                 for j in range(thickness_count):
                     try:
                         thicknesses = driver.find_elements(By.CSS_SELECTOR, "div[data-attribute_name=attribute_pa_do-day] div.ux-swatch")
-                        
-                        # if j >= len(current_thicknesses):
-                        #     break 
-                        
                         thickness_btn = thicknesses[j]
-                        thickness_name = thickness_btn.get_attribute("data-value")
-                    
-                        # if thickness_btn.get_attribute("aria-checked") == "true":
-                        #     continue
-                        
-                        if thickness_btn.get_attribute("aria-checked") != "true":
+
+                        if j == 0 and thickness_btn.get_attribute("aria-checked") == "true":
                             driver.execute_script("arguments[0].click();", thickness_btn)
-                            time.sleep(1.5)
+                            time.sleep(0.5)
                         
-                        # click độ dày
-                        # driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", thickness_btn)
-                        # driver.execute_script("arguments[0].click();", thickness_btn)
-                        # time.sleep(2)
-                        try:
-                            raw_price = driver.find_element(By.CSS_SELECTOR, "ins .woocommerce-Price-amount").text.strip()
-                            current_price = int(re.sub(r'\D', '', raw_price))
-                        except Exception as e:
-                            current_price = 0
-                            print(f"Lỗi khi cào giá hiện tại của sản phẩm: {e}")
+                        if thickness_btn.get_attribute("aria-disabled") == "true":
+                            continue
                         
-                        try:
-                            current_sku = driver.find_element(By.CSS_SELECTOR, ".sku").text.strip()
-                        except Exception as e:
-                            current_sku = None
-                            print(f"Lỗi khi cào sku hiện tại của sản phẩm: {e}")
-                            
-                        variations_data.append({
-                                "size": size_name,
-                                "thickness": thickness_name,
-                                "price": current_price,
-                                "sku": current_sku
-                        })
+                        if thickness_btn.get_attribute("aria-disabled") == "false":
+                            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", thickness_btn)
+                            driver.execute_script("arguments[0].click();", thickness_btn)
+                            thickness_name = thickness_btn.get_attribute("data-value")
+                            time.sleep(1)
+                        
+                            try: 
+                                raw_price = driver.find_element(By.CSS_SELECTOR, "ins .woocommerce-Price-amount").text.strip()
+                                current_price = int(re.sub(r'\D', '', raw_price))
+                            except Exception:
+                                try:
+                                    raw_price = driver.find_element(By.CSS_SELECTOR, ".price .woocommerce-Price-amount").text.strip()
+                                    current_price = int(re.sub(r'\D', '', raw_price)) 
+                                except Exception as e:
+                                    current_price = 0
+                                    print(f"Lỗi khi cào giá hiện tại của sản phẩm: {e}")
+                                    
+                            try:
+                                current_sku = driver.find_element(By.CSS_SELECTOR, ".sku").text.strip()
+                            except Exception as e:
+                                current_sku = None
+                                print(f"Lỗi khi cào sku hiện tại của sản phẩm: {e}")
+                                
+                            variations_data.append({
+                                    "size": size_name,
+                                    "thickness": thickness_name,
+                                    "price": current_price,
+                                    "sku": current_sku
+                            })
+                            driver.execute_script("arguments[0].click();", thickness_btn)
+                            time.sleep(0.5)
                     except Exception as e:
                         print(f"Lỗi khi cào độ dày thứ {j + 1}: {e}")
                         continue
@@ -316,12 +320,16 @@ def scrape_details(driver):
             # TH2: Không có nút độ dày            
             else:
                 try:
-                    try:
-                        raw_price = driver.find_element(By.CSS_SELECTOR, ".woocommerce-Price-amount").text.strip()
+                    try: 
+                        raw_price = driver.find_element(By.CSS_SELECTOR, "ins .woocommerce-Price-amount").text.strip()
                         current_price = int(re.sub(r'\D', '', raw_price))
-                    except Exception as e:
-                        current_price = 0
-                        print(f"Lỗi khi cào giá hiện tại của sản phẩm: {e}")
+                    except Exception:
+                        try:
+                            raw_price = driver.find_element(By.CSS_SELECTOR, ".price .woocommerce-Price-amount").text.strip()
+                            current_price = int(re.sub(r'\D', '', raw_price)) 
+                        except Exception as e:
+                            current_price = 0
+                            print(f"Lỗi khi cào giá hiện tại của sản phẩm: {e}")
                     
                     try:
                         current_sku = driver.find_element(By.CSS_SELECTOR, ".sku").text.strip()
@@ -410,7 +418,7 @@ def main():
             
             print(f"\n[PHASE 1] Đang mở trang danh mục: {cat_name} | {cat_url}")
             driver.get(cat_url)
-            time.sleep(5)
+            time.sleep(3)
             
             previous_url = ""
             
@@ -493,38 +501,33 @@ def main():
 
 def test_single_product(url):
     print(f"🔄 Đang mở trình duyệt để test link:\n{url}\n")
-    
-    # 1. Khởi tạo trình duyệt (Tùy chỉnh theo cách bạn đang dùng)
+
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless") # Bỏ comment dòng này nếu bạn không muốn web hiển thị lên
+    # options.add_argument("--headless") 
     driver = webdriver.Chrome(options=options) 
     
     try:
-        # 2. Truy cập link
         driver.get(url)
         time.sleep(3) # Chờ 3s cho web load đầy đủ các JS
         
-        # 3. Gọi hàm scrape_details mà bạn vừa viết
         print("Đang tiến hành cào dữ liệu...")
         scraped_data = scrape_details(driver)
         
-        # 4. In kết quả ra dạng JSON (căn lề indent=4 cho dễ đọc)
         print("\n" + "="*50)
-        print("🟢 KẾT QUẢ CÀO DỮ LIỆU:")
+        print("KẾT QUẢ CÀO DỮ LIỆU:")
         print("="*50)
         print(json.dumps(scraped_data, ensure_ascii=False, indent=4))
         print("="*50)
         
     except Exception as e:
-        print(f"🔴 Có lỗi xảy ra trong quá trình test: {e}")
+        print(f"Có lỗi xảy ra trong quá trình test: {e}")
         
     finally:
-        # 5. Luôn luôn nhớ dọn dẹp tắt trình duyệt dù code có lỗi hay không
         driver.quit()
         print("\nĐã đóng trình duyệt!")
 
 if __name__ == "__main__":
     main()
-    # test_url = "https://khonemtonghop.com/nem-cao-su-thien-nhien-beetex-cool-massage/"
+    # test_url = "https://khonemtonghop.com/nem-cao-su-thien-nhien-beetex-pure-2/"
     # test_single_product(test_url)
     
