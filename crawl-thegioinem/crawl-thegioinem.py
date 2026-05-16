@@ -13,9 +13,55 @@ START_URL = [
     "https://thegioinem.com/nem-cao-su",
     "https://thegioinem.com/nem-lo-xo",
     "https://thegioinem.com/nem-bong-ep",
-    "https://thegioinem.com/nem-foam",
+    "https://thegioinem.com/nem-foam"
 ]
 OUTPUT_JSON = "deals-thegioinem.json"
+
+brand_origin = {
+    "dunlopillo": "Anh Quốc",
+    "liên á": "Việt Nam",
+    "oyasumi": "Nhật Bản",
+    "tatana": "Việt Nam",
+    "acb pro": "Việt Nam",
+    "vạn thành": "Việt Nam",
+    "đồng phú": "Việt Nam",
+    "ưu việt": "Việt Nam",
+    "hàn việt hải": "Việt Nam",
+    "king koil": "Việt Nam",
+    "edena": "Việt Nam",
+    "kim cương": "Việt Nam",
+    "canada": "Canada",
+    "everon": "Việt Nam",
+    "hanvico": "Việt Nam",
+    "sông hồng": "Việt Nam",
+    "elan": "Việt Nam",
+    "tozino": "Việt Nam",
+    "cozin": "Việt Nam",
+    "khác": "Việt Nam"
+}
+
+
+brand_warranty = {
+    "tatana": "10 năm",
+    "dunlopillo": "10 năm",
+    "liên á + cao su em bé": "Không bảo hành",
+    "liên á + ladome": "12 năm",
+    "liên á + cao su": "10 năm",
+    "inoac oyasumi": "7-10 năm",
+    "royal mattress": "5-10 năm",
+    "royal sleep": "5-10 năm",
+    "kim cương + cao su": "10-12 năm",
+    "kim cương + khác": "5-10 năm",
+    "canada": "5-20 năm",
+    "everon": "5 năm",
+    "hanvico": "5 năm",
+    "sông hồng": "5 năm",
+    "elan": "7 năm",
+    "cozin": "5-10 năm",
+    "tozino": "5-7 năm",
+    "khác": "Không có thông tin"
+}
+
 
 def create_driver():
     """Creates and returns a Chrome browser that runs in the background."""
@@ -133,6 +179,40 @@ def clean_text(text):
     return "\n".join(lines)
 
 
+def extract_origin(brand):
+    brand = brand.strip().lower()
+    return brand_origin.get(brand)
+
+
+def extract_warranty(product_name, brand):
+    brand = brand.strip().lower()
+    product_name = product_name.lower()
+    
+    if brand == "liên á":
+        if "cao su em bé" in product_name:
+            warranty = brand_warranty.get("liên á + cao su em bé")
+        
+        elif "ladome" in product_name:
+            warranty = brand_warranty.get("liên á + ladome")
+        
+        elif "cao su" in product_name:
+            warranty = brand_warranty.get("liên á + cao su")
+        
+        else:
+            warranty = "10 năm"
+
+    elif brand == "kim cương":
+        if "cao su" in product_name:
+            warranty = brand_warranty.get("kim cương + cao su")
+        else:
+            warranty = brand_warranty.get("kim cương + khác")
+
+    else:
+        warranty = brand_warranty.get(brand)
+    
+    return warranty
+
+
 def scrape_variations(driver, product_name):
     description = ""
     try:
@@ -191,10 +271,11 @@ def scrape_variations(driver, product_name):
         driver.execute_script("arguments[0].click();", spec_btn)
 
         try:
-            specifications["origin"] = spec.find_element(
+            '''specifications["origin"] = spec.find_element(
                 By.XPATH,
                 ".//li[.//div[@class='name' and contains(., 'Xuất xứ')]]//div[@class='description']"
-            ).get_attribute("textContent")
+            ).get_attribute("textContent")'''
+            specifications["origin"] = extract_origin(brand)
         
         except Exception as e:
             try:
@@ -219,7 +300,7 @@ def scrape_variations(driver, product_name):
             if match:
                 specifications["warranty"] = match.group(0)
             else:
-                print("Không có thông tin bảo hành")
+                specifications["warranty"] = extract_warranty(product_name, brand)
 
         try:
             specifications["layer_composition"] = spec.find_element(
@@ -251,10 +332,11 @@ def scrape_variations(driver, product_name):
     except Exception as e:
         print(e)
         try:
-            specifications["origin"] = driver.find_element(
+            '''specifications["origin"] = driver.find_element(
                 By.XPATH,
                 "//tr[td[1][contains(., 'Xuất xứ')]]/td[2]//p"
-            ).get_attribute("textContent")
+            ).get_attribute("textContent")'''
+            specifications["origin"] = extract_origin(brand)
     
         except Exception as e:
             try:
@@ -279,7 +361,7 @@ def scrape_variations(driver, product_name):
             if match:
                 specifications["warranty"] = match.group(0)
             else:
-                print("Không có thông tin bảo hành")
+                specifications["warranty"] = extract_warranty(product_name, brand)
 
         try:
             specifications["layer_composition"] = driver.find_element(
@@ -373,48 +455,57 @@ def extract_deep_material(product_name, description, layer_composition):
     
     if "cao su tổng hợp" in text_pool or "cao su nhân tạo" in text_pool or "cao su non" in text_pool:
         detected_materials.add("Cao su tổng hợp")
+        category = "Foam"
         if "cao su bông" in text_pool:
             detected_materials.add("Bông ép")
     elif "cao su thiên nhiên" in text_pool:
         detected_materials.add("Cao su thiên nhiên")
+        category = "Cao su" 
         if "cao su bông" in text_pool:
             detected_materials.add("Bông ép")
     elif "cao su" in text_pool:
         detected_materials.add("Cao su")
+        category = "Cao su" 
         if "cao su bông" in text_pool:
             detected_materials.add("Bông ép")
             
-    if "foam" in text_pool or "mút" in text_pool or "memory foam" in text_pool or "Mousse" in text_pool:
+    if "foam" in text_pool or "mút" in text_pool or "memory foam" in text_pool or "mousse" in text_pool:
         detected_materials.add("Foam")
+        category = "Foam"
 
-    if "bông ép" in text_pool or "đệm bông" in text_pool:
+    if "bông ép" in text_pool or "đệm bông" in text_pool or "nệm bông" in text_pool:
         detected_materials.add("Bông ép")
-    
+        category = "Bông ép"
+
     # Dùng if-elif để bắt chính xác độ sâu của từ khóa lò xo
     if "lò xo túi độc lập" in text_pool or "lò xo độc lập" in text_pool:
         detected_materials.add("Lò xo túi độc lập")
-    elif "lò xo túi liên kết" in text_pool:
-        detected_materials.add("Lò xo túi độc lập")
+        category = "Lò xo"
     elif "lò xo túi cuộn" in text_pool:
         detected_materials.add("Lò xo túi cuộn")
-    elif "lò xo liên kết" in text_pool:
-        detected_materials.add("Lò xo liên kết")
+        category = "Lò xo"
+    elif "lò xo liên kết" in text_pool or "lò xo túi liên kết" in text_pool:
+        detected_materials.add("Lò xo túi liên kết")
+        category = "Lò xo"
     elif "lò xo normablock" in text_pool or "normablock" in text_pool:
         detected_materials.add("Lò xo normablock")
-    elif "lò xo" in text_pool or "spring" in text_pool:
+        category = "Lò xo"
+    elif "lò xo" in text_pool:
         detected_materials.add("Lò xo") # Lưới an toàn cho các nệm chỉ ghi chung chung
+        category = "Lò xo"
         
     is_hybrid = "hybrid" in text_pool or "đa tầng" in text_pool
     
     if is_hybrid or len(detected_materials) >= 2:
         details = " + ".join(list(detected_materials)) if detected_materials else "Không rõ"
-        return f"Nệm Hybrid ({details})"
+        category = "Hybrid"
+        return f"Nệm Hybrid ({details})", category
         
     elif len(detected_materials) == 1:
-        return list(detected_materials)[0]
+        return list(detected_materials)[0], category
     
     else:
-        return "Uncategorized"
+        return "Uncategorized", "Uncategorized"
     
 
 def go_to_next_page(driver):
@@ -516,7 +607,7 @@ def main():
             product["specifications"] = detail_data["specifications"]
             product["variations"] = detail_data["variations"]
             layer_composition = detail_data["specifications"].get("layer_composition", "")
-            product["material_type"] = extract_deep_material(
+            product["material_type"], product["category"] = extract_deep_material(
                 product["product_name"],
                 product["description"],
                 layer_composition
