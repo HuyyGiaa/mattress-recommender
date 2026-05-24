@@ -17,7 +17,6 @@ def extract_category(material_type):
     elif "hybrid" in m or "đa tầng" in m:
         return "Hybrid"
         
-    # 3. CÁC DÒNG CƠ BẢN BÊN DƯỚI GIỮ NGUYÊN NHƯ CŨ
     elif "bông ép" in m or "bông nhân tạo" in m or "sợi ceramic" in m:
         return "Bông ép"
     elif "foam" in m or "mút" in m or "nhân tạo" in m or "tổng hợp" in m:
@@ -41,8 +40,6 @@ def remove_duplicates(df):
         keep="first"
     )
     return df_cleaned.reset_index(drop=True)
-
-import re
 
 def clean_sold_number(sold_text) -> int:
     if pd.isna(sold_text) or sold_text == "":
@@ -68,21 +65,17 @@ def normalize_material_name(material_text):
     text = str(material_text).strip()
     text_lower = text.lower()
     
-    # 1. Xử lý triệt để các trường hợp "Fake Hybrid"
     if text_lower in ["nệm hybrid (foam)", "nệm hybrid (mút)", "nệm hybrid (foan)"]:
         return "Foam"
     if text_lower in ["nệm hybrid (bông ép)", "nệm hybrid (bông nhân tạo)"]:
         return "Bông ép"
     
-    # 2. Hàm con: Chuẩn hóa từ vựng (Dựa trên danh sách Markdown của bạn)
     def standardize_term(term):
         t = term.strip().lower()
         
-        # Nhóm Lò xo túi độc lập (Bắt các lỗi: lò lo, norm active...)
         if any(k in t for k in ["túi", "độc lập", "norm acitve"]):
             return "Lò xo túi độc lập"
             
-        # Nhóm Lò xo liên kết (Bắt các lỗi: lò lo liên kết, normablock...)
         elif any(k in t for k in ["liên kết", "normablock"]):
             return "Lò xo liên kết"
             
@@ -94,7 +87,7 @@ def normalize_material_name(material_text):
         elif any(k in t for k in ["foam", "foan", "mút"]):
             return "Foam"
             
-        # Nhóm Cao su (Giữ nguyên tính chất thiên nhiên/tổng hợp nếu có)
+        # Nhóm Cao su 
         elif "cao su thiên nhiên" in t:
             return "Cao su thiên nhiên"
         elif "cao su tổng hợp" in t or "cao su nhân tạo" in t:
@@ -102,22 +95,17 @@ def normalize_material_name(material_text):
         elif "cao su" in t:
             return "Cao su"
             
-        # Nếu không lọt vào nhóm nào, viết hoa chữ cái đầu cho đẹp
         else:
             return term.strip().capitalize()
 
-    # 3. Xử lý cấu trúc nệm Hybrid (Sắp xếp và gộp)
+    # Xử lý cấu trúc nệm Hybrid (Sắp xếp và gộp)
     match = re.search(r'\((.*?)\)', text)
     if "hybrid" in text_lower and match:
-        # Tách các chất liệu bên trong ngoặc, và đưa qua hàm chuẩn hóa ở trên
         components = [standardize_term(c) for c in match.group(1).split('+')]
-        
-        # BÍ QUYẾT: Dùng set() để xóa trùng lặp, dùng sorted() để sắp xếp A-Z
         components = sorted(list(set(components))) 
-        
-        # Ghép lại thành chuỗi chuẩn
         new_inner = " + ".join(components)
         return f"Nệm Hybrid ({new_inner})"
         
-    # 4. Nếu không phải nệm Hybrid, chỉ cần chuẩn hóa nguyên câu
+    # Nếu không phải nệm Hybrid, chỉ cần chuẩn hóa nguyên câu
     return standardize_term(text)
+
