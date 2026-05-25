@@ -180,12 +180,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "05*",
+                "thickness": "05",
                 "price": 6764000
             },
             {
                 "size": "220x200",
-                "thickness": "05*",
+                "thickness": "05",
                 "price": 7662000
             },
             {
@@ -255,12 +255,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 14979000
             },
             {
                 "size": "220x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 16443000
             },
             {
@@ -270,12 +270,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "17*",
+                "thickness": "17",
                 "price": 16045000
             },
             {
                 "size": "220x200",
-                "thickness": "17*",
+                "thickness": "17",
                 "price": 17618000
             }
         ],
@@ -333,7 +333,7 @@
                 "price": 6792000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -350,7 +350,58 @@
             "warranty": "Bảo Hành: 15 Năm",
             "firmness": "Trung bình - Hơi cứng"
         },
-        "variations": [],
+        "variations": [
+            {
+                "size": "120x200",
+                "thickness": "10",
+                "price": 7961000
+            },
+            {
+                "size": "140x200",
+                "thickness": "10",
+                "price": 8779000
+            },
+            {
+                "size": "160x200",
+                "thickness": "10",
+                "price": 9523000
+            },
+            {
+                "size": "180x200",
+                "thickness": "10",
+                "price": 10862000
+            },
+            {
+                "size": "200x220",
+                "thickness": "10",
+                "price": 13913000
+            },
+            {
+                "size": "120x200",
+                "thickness": "15",
+                "price": 10639000
+            },
+            {
+                "size": "140x200",
+                "thickness": "15",
+                "price": 11309000
+            },
+            {
+                "size": "160x200",
+                "thickness": "15",
+                "price": 12946000
+            },
+            {
+                "size": "180x200",
+                "thickness": "15",
+                "price": 15029000
+            },
+            {
+                "size": "200x220",
+                "thickness": "15",
+                "price": 18600000
+            }
+        ],
         "material_type": "Cao su thiên nhiên",
         "category": "Cao su"
     },
@@ -381,12 +432,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 42067000
             },
             {
                 "size": "200x220",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 52182000
             },
             {
@@ -401,12 +452,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 29997000
             },
             {
                 "size": "200x220",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 36457000
             }
         ],
@@ -490,7 +541,7 @@
             },
             {
                 "size": "220x200",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 19913000
             },
             {
@@ -588,7 +639,7 @@
                 "price": 7098000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -667,7 +718,7 @@
                 "price": 11863000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -1081,7 +1132,7 @@
                 "price": 19250000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -1155,7 +1206,7 @@
                 "price": 26425000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -1249,7 +1300,7 @@
                 "price": 10315000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -1393,7 +1444,7 @@
                 "price": 20320000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -1775,7 +1826,7 @@
             },
             {
                 "size": "200x220",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 19723000
             },
             {
@@ -1795,7 +1846,7 @@
             },
             {
                 "size": "200x220",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 31435000
             }
         ],
@@ -1829,12 +1880,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 29997000
             },
             {
                 "size": "200x220",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 36457000
             },
             {
@@ -1849,12 +1900,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 42067000
             },
             {
                 "size": "200x220",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 52182000
             }
         ],
@@ -2105,12 +2156,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 19439000
             },
             {
                 "size": "220x200",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 21144000
             }
         ],
@@ -2159,7 +2210,7 @@
             },
             {
                 "size": "200x200",
-                "thickness": "05*",
+                "thickness": "05",
                 "price": 10845000
             },
             {
@@ -2194,7 +2245,7 @@
             },
             {
                 "size": "200x220",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 18934000
             },
             {
@@ -2209,12 +2260,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 24472000
             },
             {
                 "size": "200x220",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 30178000
             }
         ],
@@ -2268,7 +2319,7 @@
             },
             {
                 "size": "220x200",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 13494000
             },
             {
@@ -2332,12 +2383,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "05*",
+                "thickness": "05",
                 "price": 8230000
             },
             {
                 "size": "220x200",
-                "thickness": "05*",
+                "thickness": "05",
                 "price": 9042000
             },
             {
@@ -2407,12 +2458,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 18212000
             },
             {
                 "size": "220x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 20000000
             },
             {
@@ -2501,12 +2552,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 19231000
             },
             {
                 "size": "220x200",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 21087000
             }
         ],
@@ -2669,7 +2720,68 @@
             "warranty": "Bảo Hành: 12 Năm",
             "firmness": "Trung bình - Hơi cứng"
         },
-        "variations": [],
+        "variations": [
+            {
+                "size": "100x200",
+                "thickness": "05",
+                "price": 5813000
+            },
+            {
+                "size": "120x200",
+                "thickness": "05",
+                "price": 4265000
+            },
+            {
+                "size": "140x200",
+                "thickness": "05",
+                "price": 4648000
+            },
+            {
+                "size": "160x200",
+                "thickness": "05",
+                "price": 5030000
+            },
+            {
+                "size": "180x200",
+                "thickness": "05",
+                "price": 5540000
+            },
+            {
+                "size": "100x200",
+                "thickness": "10",
+                "price": 5604000
+            },
+            {
+                "size": "120x200",
+                "thickness": "10",
+                "price": 6369000
+            },
+            {
+                "size": "140x200",
+                "thickness": "10",
+                "price": 7134000
+            },
+            {
+                "size": "160x200",
+                "thickness": "10",
+                "price": 7899000
+            },
+            {
+                "size": "180x200",
+                "thickness": "10",
+                "price": 8919000
+            },
+            {
+                "size": "160x200",
+                "thickness": "15",
+                "price": 11087000
+            },
+            {
+                "size": "180x200",
+                "thickness": "15",
+                "price": 12680000
+            }
+        ],
         "material_type": "Cao su thiên nhiên",
         "category": "Cao su"
     },
@@ -2981,7 +3093,7 @@
                 "price": 23575000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo túi độc lập + Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên + Lò xo túi độc lập + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -3570,12 +3682,12 @@
             },
             {
                 "size": "200x200",
-                "thickness": "05*",
+                "thickness": "05",
                 "price": 14697000
             },
             {
                 "size": "200x220",
-                "thickness": "05*",
+                "thickness": "05",
                 "price": 16089000
             },
             {
@@ -3610,7 +3722,7 @@
             },
             {
                 "size": "200x220",
-                "thickness": "10*",
+                "thickness": "10",
                 "price": 22619000
             },
             {
@@ -3640,7 +3752,7 @@
             },
             {
                 "size": "200x220",
-                "thickness": "15*",
+                "thickness": "15",
                 "price": 33363000
             },
             {
@@ -3660,7 +3772,7 @@
             },
             {
                 "size": "200x220",
-                "thickness": "20*",
+                "thickness": "20",
                 "price": 44208000
             }
         ],
@@ -5807,7 +5919,7 @@
                 "price": 2947000
             }
         ],
-        "material_type": "Nệm Hybrid (Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -6010,7 +6122,7 @@
                 "price": 3807000
             }
         ],
-        "material_type": "Nệm Hybrid (Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -6483,7 +6595,93 @@
             "warranty": "bảo hành : 05 năm",
             "firmness": "Cứng"
         },
-        "variations": [],
+        "variations": [
+            {
+                "size": "100x200",
+                "thickness": "05",
+                "price": 1937000
+            },
+            {
+                "size": "120x200",
+                "thickness": "05",
+                "price": 2225000
+            },
+            {
+                "size": "140x200",
+                "thickness": "05",
+                "price": 2585000
+            },
+            {
+                "size": "160x200",
+                "thickness": "05",
+                "price": 2873000
+            },
+            {
+                "size": "180x200",
+                "thickness": "05",
+                "price": 3233000
+            },
+            {
+                "size": "200x220",
+                "thickness": "05",
+                "price": 4025000
+            },
+            {
+                "size": "100x200",
+                "thickness": "09",
+                "price": 2441000
+            },
+            {
+                "size": "120x200",
+                "thickness": "09",
+                "price": 2873000
+            },
+            {
+                "size": "140x200",
+                "thickness": "09",
+                "price": 3377000
+            },
+            {
+                "size": "160x200",
+                "thickness": "09",
+                "price": 3737000
+            },
+            {
+                "size": "180x200",
+                "thickness": "09",
+                "price": 4025000
+            },
+            {
+                "size": "200x220",
+                "thickness": "09",
+                "price": 5465000
+            },
+            {
+                "size": "120x200",
+                "thickness": "14",
+                "price": 4025000
+            },
+            {
+                "size": "140x200",
+                "thickness": "14",
+                "price": 4817000
+            },
+            {
+                "size": "160x200",
+                "thickness": "14",
+                "price": 5321000
+            },
+            {
+                "size": "180x200",
+                "thickness": "14",
+                "price": 5969000
+            },
+            {
+                "size": "200x220",
+                "thickness": "14",
+                "price": 7337000
+            }
+        ],
         "material_type": "Bông ép",
         "category": "Bông ép"
     },
@@ -6573,7 +6771,7 @@
                 "price": 4622000
             }
         ],
-        "material_type": "Nệm Hybrid (Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -6766,7 +6964,7 @@
                 "price": 6151000
             }
         ],
-        "material_type": "Nệm Hybrid (Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -6994,7 +7192,7 @@
                 "price": 5560000
             }
         ],
-        "material_type": "Nệm Hybrid (Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -7118,7 +7316,7 @@
                 "price": 5779000
             }
         ],
-        "material_type": "Nệm Hybrid (Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -7480,7 +7678,7 @@
                 "price": 12906000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -7805,7 +8003,38 @@
             "warranty": "Bảo Hành: 05 Năm",
             "firmness": "Cứng"
         },
-        "variations": [],
+        "variations": [
+            {
+                "size": "100x200",
+                "thickness": "15",
+                "price": 3057000
+            },
+            {
+                "size": "120x200",
+                "thickness": "15",
+                "price": 3271000
+            },
+            {
+                "size": "140x200",
+                "thickness": "15",
+                "price": 3413000
+            },
+            {
+                "size": "160x200",
+                "thickness": "15",
+                "price": 3556000
+            },
+            {
+                "size": "180x200",
+                "thickness": "15",
+                "price": 3912000
+            },
+            {
+                "size": "200x220",
+                "thickness": "15",
+                "price": 4482000
+            }
+        ],
         "material_type": "Bông ép",
         "category": "Bông ép"
     },
@@ -7892,8 +8121,69 @@
             "warranty": "Bảo Hành: 05 Năm",
             "firmness": "Cứng"
         },
-        "variations": [],
-        "material_type": "Nệm Hybrid (Bông ép + Foam)",
+        "variations": [
+            {
+                "size": "100x200",
+                "thickness": "16",
+                "price": 3770000
+            },
+            {
+                "size": "120x200",
+                "thickness": "16",
+                "price": 3912000
+            },
+            {
+                "size": "140x200",
+                "thickness": "16",
+                "price": 4055000
+            },
+            {
+                "size": "160x200",
+                "thickness": "16",
+                "price": 4268000
+            },
+            {
+                "size": "180x200",
+                "thickness": "16",
+                "price": 4667000
+            },
+            {
+                "size": "200x220",
+                "thickness": "16",
+                "price": 5380000
+            },
+            {
+                "size": "100x200",
+                "thickness": "22",
+                "price": 5693000
+            },
+            {
+                "size": "120x200",
+                "thickness": "22",
+                "price": 6121000
+            },
+            {
+                "size": "140x200",
+                "thickness": "22",
+                "price": 6620000
+            },
+            {
+                "size": "160x200",
+                "thickness": "22",
+                "price": 7090000
+            },
+            {
+                "size": "180x200",
+                "thickness": "22",
+                "price": 7831000
+            },
+            {
+                "size": "200x220",
+                "thickness": "22",
+                "price": 8906000
+            }
+        ],
+        "material_type": "Nệm Hybrid (Foam + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -8093,7 +8383,68 @@
             "warranty": "Bảo Hành: 10 năm",
             "firmness": "Trung bình"
         },
-        "variations": [],
+        "variations": [
+            {
+                "size": "100x200",
+                "thickness": "26",
+                "price": 4374000
+            },
+            {
+                "size": "120x200",
+                "thickness": "26",
+                "price": 4455000
+            },
+            {
+                "size": "140x200",
+                "thickness": "26",
+                "price": 4617000
+            },
+            {
+                "size": "160x200",
+                "thickness": "26",
+                "price": 4860000
+            },
+            {
+                "size": "180x200",
+                "thickness": "26",
+                "price": 5468000
+            },
+            {
+                "size": "200x200",
+                "thickness": "26",
+                "price": 6683000
+            },
+            {
+                "size": "100x200",
+                "thickness": "30",
+                "price": 7209000
+            },
+            {
+                "size": "120x200",
+                "thickness": "30",
+                "price": 7371000
+            },
+            {
+                "size": "140x200",
+                "thickness": "30",
+                "price": 7695000
+            },
+            {
+                "size": "160x200",
+                "thickness": "30",
+                "price": 8100000
+            },
+            {
+                "size": "180x200",
+                "thickness": "30",
+                "price": 9113000
+            },
+            {
+                "size": "200x200",
+                "thickness": "30",
+                "price": 10125000
+            }
+        ],
         "material_type": "Nệm Hybrid (Lò xo túi độc lập + Cao su tổng hợp)",
         "category": "Hybrid"
     },
@@ -8148,7 +8499,7 @@
                 "price": 6138000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo)",
         "category": "Hybrid"
     },
     {
@@ -8192,7 +8543,7 @@
                 "price": 4154000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -8256,7 +8607,7 @@
                 "price": 16494000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo liên kết)",
+        "material_type": "Nệm Hybrid (Lò xo liên kết + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -8364,7 +8715,7 @@
                 "price": 3077000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -8428,7 +8779,7 @@
                 "price": 16408000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo liên kết)",
+        "material_type": "Nệm Hybrid (Lò xo liên kết + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -8487,7 +8838,7 @@
                 "price": 11453000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -8541,7 +8892,7 @@
                 "price": 13365000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -8595,7 +8946,7 @@
                 "price": 11360000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -8649,7 +9000,7 @@
                 "price": 25979000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo liên kết)",
+        "material_type": "Nệm Hybrid (Lò xo liên kết + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -8703,7 +9054,7 @@
                 "price": 6904000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -8757,7 +9108,7 @@
                 "price": 7867000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -8774,7 +9125,43 @@
             "warranty": "Bảo Hành: 10 năm",
             "firmness": "Trung bình"
         },
-        "variations": [],
+        "variations": [
+            {
+                "size": "100x200",
+                "thickness": "24",
+                "price": 3726000
+            },
+            {
+                "size": "120x200",
+                "thickness": "24",
+                "price": 3834000
+            },
+            {
+                "size": "140x200",
+                "thickness": "24",
+                "price": 3996000
+            },
+            {
+                "size": "160x200",
+                "thickness": "24",
+                "price": 4266000
+            },
+            {
+                "size": "180x200",
+                "thickness": "24",
+                "price": 4806000
+            },
+            {
+                "size": "200x200",
+                "thickness": "24",
+                "price": 5886000
+            },
+            {
+                "size": "220x200",
+                "thickness": "24",
+                "price": 6426000
+            }
+        ],
         "material_type": "Lò xo",
         "category": "Lò xo"
     },
@@ -8819,7 +9206,7 @@
                 "price": 10391000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -9072,7 +9459,7 @@
                 "price": 17775000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo liên kết)",
+        "material_type": "Nệm Hybrid (Lò xo liên kết + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -9126,7 +9513,7 @@
                 "price": 13569000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo liên kết + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo liên kết)",
         "category": "Hybrid"
     },
     {
@@ -9190,7 +9577,7 @@
                 "price": 31284000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo túi độc lập)",
+        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -9278,7 +9665,7 @@
                 "price": 10391000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -9332,7 +9719,7 @@
                 "price": 8198000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -9386,7 +9773,7 @@
                 "price": 18386000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo liên kết + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo liên kết + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -9499,7 +9886,7 @@
                 "price": 7398000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo + Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -9558,7 +9945,7 @@
                 "price": 7597000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -9602,7 +9989,7 @@
                 "price": 5754000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -9646,7 +10033,7 @@
                 "price": 4154000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -9690,7 +10077,7 @@
                 "price": 3667000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -9739,7 +10126,7 @@
                 "price": 19296000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo túi độc lập)",
+        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -9852,7 +10239,7 @@
                 "price": 59278000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -9916,7 +10303,7 @@
                 "price": 31284000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo túi độc lập)",
+        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -9970,7 +10357,7 @@
                 "price": 18386000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Lò xo liên kết + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo liên kết + Cao su)",
         "category": "Hybrid"
     },
     {
@@ -10024,7 +10411,7 @@
                 "price": 13569000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo liên kết + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo liên kết)",
         "category": "Hybrid"
     },
     {
@@ -10255,7 +10642,7 @@
                 "price": 37230000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên + Lò xo)",
         "category": "Hybrid"
     },
     {
@@ -10309,7 +10696,7 @@
                 "price": 19805000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên + Lò xo)",
         "category": "Hybrid"
     },
     {
@@ -10363,7 +10750,7 @@
                 "price": 3415000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo)",
         "category": "Hybrid"
     },
     {
@@ -10466,7 +10853,7 @@
                 "price": 5082000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo)",
         "category": "Hybrid"
     },
     {
@@ -10515,7 +10902,7 @@
                 "price": 5742000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo)",
         "category": "Hybrid"
     },
     {
@@ -10564,7 +10951,7 @@
                 "price": 3484000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo)",
         "category": "Hybrid"
     },
     {
@@ -10618,7 +11005,7 @@
                 "price": 10760000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -10636,7 +11023,7 @@
             "firmness": "Cứng"
         },
         "variations": [],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -10654,7 +11041,7 @@
             "firmness": "Cứng"
         },
         "variations": [],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Bông ép + Foam + Cao su tổng hợp)",
+        "material_type": "Nệm Hybrid (Foam + Cao su tổng hợp + Lò xo túi độc lập + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -10721,11 +11108,52 @@
         "description": "Bảng Giá Nệm Lò Xo Romantic - King ( 10.10.2025 )\nĐiểm nổi bật\nNệm lò xo Romantic với kết cấu đặc biệt, tận dụng tối đa tính năng đàn hồi của lò xo kết hợp với công nghệ sản xuất riêng biệt tạo cho sản phẩm có độ êm ái và chắc chắn ổn định\nĐộ nhún tối ưu và độ thông thoáng vượt trội, giúp nâng đỡ tối đa trọng lực cơ thể , hỗ trợ xương tạo giấc ngủ sâu cho người sử dụng.\nSản phẩm nệm lò xo Romantic với mẫu mã đẹp, sử dụng các nguyên liệu có khả năng chống khuẩn, thân thiện với môi trường, độ an toàn cao và không độc hại.\nNệm có độ cứng hợp lý cùng độ phẳng cao nên không gây đau lưng, thông khí tốt, thoát ẩm nhanh, có lợi cho quá trình tuần hoàn máu của người sử dụng.\nHai mặt của nệm được bọc bằng vải Poly rất mịn và thoáng mát.\nXuất xứ: Đài Loan và Việt Nam hợp tác.\nGiới thiệu chi tiết\nBạn muốn được thư giãn và được ngủ một giấc ngủ thật sâu, thật thoải mái để cơ thể có thể nghỉ ngơi sau một ngày làm việc căng thẳng và mệt mỏi trên chiếc giường quen thuộc của mình. Nhưng để chọn được một sản phẩm nệm thích hợp cho bạn và gia đình là một điều không hề đơn giản với vô số những nhãn hiệu nệm đang có mặt trên thị trường. Sản phẩm nệm lò xo Romantic với thiết kế và chất liệu tốt nhất sẽ cho bạn thêm một sự lựa chọn để mang đến cho gia đình mình những sản phẩm tốt nhất.\nSản phẩm nệm lò xo Romantic với kết cấu đặc biệt, tận dụng tối đa tính năng đàn hồi của lò xo kết hợp với công nghệ sản xuất riêng biệt tạo cho sản phẩm có độ êm ái và chắc chắn, ổn định. Hơn hết, người dùng sẽ được trải nghiệm một cảm giác đích thực về khái niệm đệm lò xo với độ nhún tối ưu và độ thông thoáng vượt trội, giúp nâng đỡ tối đa trọng lực cơ thể , hỗ trợ xương tạo giấc ngủ sâu cho người sử dụng.\nNệm có độ cứng hợp lý cùng độ phẳng cao nên không gây đau lưng, thông khí tốt, thoát ẩm nhanh, có lợi cho quá trình tuần hoàn máu của người sử dụng. Hai mặt của nệm được bọc bằng vải Poly rất mịn và thoáng mát, chắc chắn sẽ làm hài lòng kể cả với những khách hàng khó tính nhất.\nSản phẩm nệm lò xo Romantic với mẫu mã đẹp, sử dụng các nguyên liệu có khả năng chống khuẩn, thân thiện với môi trường, độ an toàn cao và không độc hại, giấc ngủ của bạn sẽ ngon hơn và sâu hơn, một giấc ngủ ngon và sâu tạo cảm giác thoải mái nhất mỗi khi bạn thức giấc.\nXUẤT XỨ: ROMANTIC\nBẢO HÀNH: 10 NĂM",
         "brand": "ROMATIC",
         "specifications": {
-            "origin": null,
+            "origin": "Việt Nam",
             "warranty": "BẢO HÀNH: 10 NĂM",
             "firmness": "Trung bình"
         },
-        "variations": [],
+        "variations": [
+            {
+                "size": "80x200",
+                "thickness": "30",
+                "price": 4154000
+            },
+            {
+                "size": "100x200",
+                "thickness": "30",
+                "price": 4431000
+            },
+            {
+                "size": "120x200",
+                "thickness": "30",
+                "price": 4615000
+            },
+            {
+                "size": "140x200",
+                "thickness": "30",
+                "price": 4800000
+            },
+            {
+                "size": "160x200",
+                "thickness": "30",
+                "price": 4985000
+            },
+            {
+                "size": "180x200",
+                "thickness": "30",
+                "price": 5446000
+            },
+            {
+                "size": "200x200",
+                "thickness": "30",
+                "price": 6657000
+            },
+            {
+                "size": "220x200",
+                "thickness": "30",
+                "price": 8137000
+            }
+        ],
         "material_type": "Lò xo",
         "category": "Lò xo"
     },
@@ -10790,7 +11218,7 @@
                 "price": 4801000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo)",
         "category": "Hybrid"
     },
     {
@@ -10826,7 +11254,7 @@
             "firmness": "Trung bình"
         },
         "variations": [],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -10875,7 +11303,7 @@
                 "price": 6768000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -10924,7 +11352,7 @@
                 "price": 6360000
             }
         ],
-        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Lò xo túi độc lập)",
         "category": "Hybrid"
     },
     {
@@ -11045,7 +11473,7 @@
                 "price": 17464000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo túi độc lập)",
+        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -11094,7 +11522,7 @@
                 "price": 15432000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo túi độc lập)",
+        "material_type": "Nệm Hybrid (Lò xo túi độc lập + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -11143,7 +11571,7 @@
                 "price": 11159000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Lò xo liên kết)",
+        "material_type": "Nệm Hybrid (Lò xo liên kết + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {
@@ -11683,7 +12111,7 @@
                 "price": 5954000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su + Bông ép + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su + Bông ép)",
         "category": "Hybrid"
     },
     {
@@ -11807,7 +12235,7 @@
                 "price": 8100000
             }
         ],
-        "material_type": "Nệm Hybrid (Cao su thiên nhiên + Foam)",
+        "material_type": "Nệm Hybrid (Foam + Cao su thiên nhiên)",
         "category": "Hybrid"
     },
     {

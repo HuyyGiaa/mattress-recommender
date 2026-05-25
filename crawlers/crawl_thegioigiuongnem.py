@@ -42,7 +42,7 @@ brand_origin = {
     "usa golden bedding": "Hoa Kỳ",
     "vinamattress": "Việt Nam",
     "korea": "Hàn Quốc",
-    "romantic": "Việt Nam",
+    "romatic": "Việt Nam",
     "spring air": "Hoa Kỳ",
     "nệm liên á": "Việt Nam",
     "thắng lợi": "Việt Nam",
@@ -348,44 +348,42 @@ def scrape_variations(driver, product_name):
     variations_data = []
 
     try:
-        sizes_tag = driver.find_element(
-            By.CSS_SELECTOR, "select.single-option-selector"
-        )
+        select_element = driver.find_element(By.CSS_SELECTOR, "select.single-option-selector")
+        options = select_element.find_elements(By.TAG_NAME, "option")
 
-        dropdown = Select(sizes_tag)
-        
-        # 3. Lấy tất cả các thẻ <option> bên trong
-        options = dropdown.options
-
-        # 4. Lặp qua từng option để chọn và lấy giá
         for option in options:
-            size = option.get_attribute("textContent").strip()
+            size_text = option.get_attribute("textContent").strip()
+            option_value = option.get_attribute("value")
             
-            size_parts = [part.strip() for part in size.split('x')]
-            size_name = size_parts[0] + 'x' + size_parts[1]
+            # Cắt chuỗi theo dấu '*' như trong HTML của web
+            size_parts = [part.strip() for part in re.split(r'[\*xX]', size_text)]
+            if len(size_parts) >= 2:
+                size_name = size_parts[0] + 'x' + size_parts[1]
+            else:
+                size_name = size_text
+                
+            thickness_name = size_parts[2].replace("cm", "").replace("*", "") if len(size_parts) >= 3 else None
 
-            thickness_name = None
-            if len(size_parts) == 3:
-                thickness_name = size_parts[2].replace("cm", "")
-
-            # --- BƯỚC QUAN TRỌNG: Chọn kích thước ---
-            dropdown.select_by_visible_text(size)
+            # Dùng JavaScript thay đổi value thay vì click để tránh lỗi element not interactable
+            driver.execute_script("""
+                var select = arguments[0];
+                select.value = arguments[1];
+                select.dispatchEvent(new Event('change'));
+            """, select_element, option_value)
             
-            # --- BƯỚC CỰC KỲ QUAN TRỌNG: Đợi giá load ---
-            # Web cần một khoảng thời gian ngắn (JS chạy ngầm) để cập nhật lại giá mới.
-            # Nếu không đợi, bạn sẽ toàn cào ra giá cũ của kích thước trước đó.
-            time.sleep(1.5) # Bạn có thể điều chỉnh hoặc dùng WebDriverWait tối ưu hơn
+            time.sleep(1.5) # Chờ DOM render giá mới
             
-            # 5. Cào giá mới vừa xuất hiện (Bạn thay đoạn CSS này bằng CSS lấy giá thực tế của bạn)
             try:
-                # Ví dụ CSS giả định lấy giá khuyến mãi, hãy thay bằng CSS chính xác trên trang
-                price = int(driver.find_element(By.CSS_SELECTOR, "span.product-price").get_attribute("textContent").replace("₫", "").replace(".", ""))
+                # Tìm element giá chuẩn (dựa theo hình bạn cung cấp)
+                price_text = driver.find_element(By.CSS_SELECTOR, "span.price.product-price").get_attribute("textContent")
+                price = int(re.sub(r'[^\d]', '', price_text)) # Chỉ lấy phần số
+                
                 variations_data.append({
                     "size": size_name,
                     "thickness": thickness_name,
                     "price": price,
                 })
-                
+
             except Exception as e:
                 print(f"Lỗi khi lấy giá của kích thước {size_name}: {e}")
 
@@ -532,7 +530,7 @@ def main():
 
                 # Truy cập vào link chi tiết của sản phẩm
             driver.get(product_url)
-            time.sleep(10) # Chờ trang chi tiết load
+            time.sleep(5) # Chờ trang chi tiết load
 
             # Cào mô tả và click chọn từng biến thể size/độ dày
             detail_data = scrape_variations(driver, product_name)
