@@ -79,6 +79,36 @@ def recommend(user_input):
     
     return result
 
+def recommend_userclick(user_click):
+    df = df_index.copy()
+    df_filtered = df[df['product_name'] != (user_click['product_name'])]
+    candidate_ids = df_filtered.index.to_numpy()
+    X_candidates = X[candidate_ids]
+
+    idx = df[df.eq(user_click).all(axis=1)].index[0]
+    vector = X[idx]
+    scores = cosine_similarity(vector, X_candidates).flatten()
+
+    df_result = df_filtered.copy()
+    df_result["similarity"] = scores
+
+    df_result = df_result[df_result.index != idx]
+
+    df_result = df_result.sort_values(
+        by=["similarity", "popularity_score"],
+        ascending=[False, False]
+    )
+
+    top_20 = df_result.head(20)
+
+    result = (top_20
+        .sort_values('similarity', ascending=False)
+        .groupby('product_name')
+        .first()  # lấy SKU giá thấp nhất hoặc similarity cao nhất
+        .reset_index()
+        .head(5))
+    
+    return result
 
 user_input = {
     "category": "Lò xo",
