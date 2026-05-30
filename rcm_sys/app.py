@@ -88,7 +88,6 @@ st.markdown(STYLES, unsafe_allow_html=True)
 @st.cache_resource
 def load_data():
     X = load_npz("data/final/feature_matrix.npz")
-    #df_index = pd.read_csv("data/final/mattresses_index.csv", index_col=0)
     df_index = pd.read_csv("data/final/mattresses_index.csv")
     return X, df_index
 
@@ -108,7 +107,7 @@ def get_similar(df_filtered, X):
     df_result["similarity"] = scores
     df_result = df_result[df_result.index != query_id]
     df_result = df_result.sort_values(by=["similarity","popularity_score"], ascending=[False,False])
-    return df_result.head(20)
+    return df_result.head(40)
 
 
 def recommend(user_input, X, df_index):
@@ -127,10 +126,10 @@ def recommend(user_input, X, df_index):
         df_filtered = df_filtered[df_filtered["length"] <= user_input["length"]]
     if user_input.get("firmness") is not None:
         df_filtered = df_filtered[df_filtered["firmness"] == user_input["firmness"]]
-    top20 = get_similar(df_filtered, X)
-    if top20.empty:
+    top40 = get_similar(df_filtered, X)
+    if top40.empty:
         return pd.DataFrame()
-    return (top20.sort_values("similarity", ascending=False)
+    return (top40.sort_values("similarity", ascending=False)
             .groupby("product_name").first().reset_index().head(5))
 
 
@@ -151,9 +150,14 @@ def recommend_userclick(user_click_row, X, df_index):
     df_result = df_filtered.copy()
     df_result["similarity"] = scores
     df_result = df_result.sort_values(by=["similarity","popularity_score"], ascending=[False,False])
-    top20 = df_result.head(20)
-    return (top20.sort_values("similarity", ascending=False)
-            .groupby("product_name").first().reset_index().head(5))
+    top30 = df_result.head(30)
+
+    result = (top30
+          .sort_values("similarity", ascending=False)
+          .groupby("product_name").first()
+          .reset_index())
+
+    return result.sample(n=min(5, len(result)), random_state=None)
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -316,16 +320,32 @@ elif data_loaded and st.session_state.page == "search":
         st.markdown('<div class="section-label">Loại nệm</div>', unsafe_allow_html=True)
         selected_category = st.selectbox("Loại nệm", categories, label_visibility="collapsed")
 
-        st.markdown('<div class="section-label">Khoảng giá (VNĐ)</div>', unsafe_allow_html=True)
-        price_min_input = st.number_input("Giá tối thiểu", min_value=0, value=0, step=500_000, format="%d", label_visibility="collapsed", placeholder="Giá tối thiểu")
-        price_max_input = st.number_input("Giá tối đa",    min_value=0, value=0, step=500_000, format="%d", label_visibility="collapsed", placeholder="Giá tối đa (0 = không giới hạn)")
+        st.markdown('<div class="section-label">Khoảng giá</div>', unsafe_allow_html=True)
+        PRICE_RANGES = {
+            "(Tất cả)":       (None, None),
+            "Dưới 5 triệu":  (0,        5_000_000),
+            "5 – 10 triệu":  (5_000_000, 10_000_000),
+            "10 – 15 triệu": (10_000_000, 15_000_000),
+            "15 – 30 triệu": (15_000_000, 30_000_000),
+            "Trên 30 triệu": (30_000_000, None),
+        }
+        selected_price_label = st.radio(
+            "Khoảng giá", list(PRICE_RANGES.keys()),
+            label_visibility="collapsed"
+        )
+        price_min_input, price_max_input = PRICE_RANGES[selected_price_label]
 
         st.markdown('<div class="section-label">Độ dày (cm)</div>', unsafe_allow_html=True)
         selected_thickness = st.selectbox("Độ dày", thickness_vals, label_visibility="collapsed")
 
-        st.markdown('<div class="section-label">Kích thước tối đa</div>', unsafe_allow_html=True)
-        width_input  = st.number_input("Chiều rộng (cm)", min_value=0, value=0, step=10, format="%d", help="0 = không giới hạn")
-        length_input = st.number_input("Chiều dài (cm)",  min_value=0, value=0, step=10, format="%d", help="0 = không giới hạn")
+        width_vals  = ["(Tất cả)"] + sorted(df_index["width"].dropna().unique().tolist())
+        length_vals = ["(Tất cả)"] + sorted(df_index["length"].dropna().unique().tolist())
+
+        st.markdown('<div class="section-label">Chiều rộng (cm)</div>', unsafe_allow_html=True)
+        selected_width  = st.selectbox("Chiều rộng", width_vals,  label_visibility="collapsed")
+
+        st.markdown('<div class="section-label">Chiều dài (cm)</div>', unsafe_allow_html=True)
+        selected_length = st.selectbox("Chiều dài",  length_vals, label_visibility="collapsed")
 
         st.markdown('<div class="section-label">Độ cứng</div>', unsafe_allow_html=True)
         selected_firmness = st.selectbox("Độ cứng", firmness_vals, label_visibility="collapsed")
@@ -339,16 +359,16 @@ elif data_loaded and st.session_state.page == "search":
             user_input = {}
             if selected_category != "(Tất cả)":
                 user_input["category"]  = selected_category
-            if price_min_input > 0:
+            if price_min_input is not None:
                 user_input["price_min"] = price_min_input
-            if price_max_input > 0:
+            if price_max_input is not None:
                 user_input["price_max"] = price_max_input
             if selected_thickness != "(Tất cả)":
                 user_input["thickness"] = selected_thickness
-            if width_input > 0:
-                user_input["width"]     = width_input
-            if length_input > 0:
-                user_input["length"]    = length_input
+            if selected_width != "(Tất cả)":
+                user_input["width"]     = selected_width
+            if selected_length != "(Tất cả)":
+                user_input["length"]    = selected_length
             if selected_firmness != "(Tất cả)":
                 user_input["firmness"]  = selected_firmness
 
