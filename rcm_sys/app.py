@@ -149,8 +149,11 @@ def recommend_userclick(user_click_row, X, df_index):
     df_result = df_filtered.copy()
     df_result["similarity"] = scores
     df_result = df_result.sort_values(by=["similarity","popularity_score"], ascending=[False,False])
-    return (df_result.sort_values("similarity", ascending=False)
-            .groupby("product_name").first().reset_index().head(5))
+    df_unique = df_result.drop_duplicates(subset=["product_name"], keep="first")
+    
+    top15 = df_unique.head(15).reset_index(drop=True)
+
+    return top15.sample(n=min(5, len(top15)), random_state=None)
 
 
 def recommend_cold_start(df_index, price_min=None, price_max=None):
