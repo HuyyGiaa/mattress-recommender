@@ -21,7 +21,7 @@ def get_similar(df_filtered, X):
     df_result["similarity"] = scores
     df_result = df_result[df_result.index != query_id]
     df_result = df_result.sort_values(by=["similarity","popularity_score"], ascending=[False,False])
-    return df_result.head(40)
+    return df_result
 
 
 def recommend(user_input, X, df_index):
@@ -35,16 +35,16 @@ def recommend(user_input, X, df_index):
     if user_input.get("thickness"):
         df_filtered = df_filtered[df_filtered["thickness"] == user_input["thickness"]]
     if user_input.get("width"):
-        df_filtered = df_filtered[df_filtered["width"] <= user_input["width"]]
+        df_filtered = df_filtered[df_filtered["width"] == user_input["width"]]
     if user_input.get("length"):
-        df_filtered = df_filtered[df_filtered["length"] <= user_input["length"]]
+        df_filtered = df_filtered[df_filtered["length"] == user_input["length"]]
     if user_input.get("firmness") is not None:
         df_filtered = df_filtered[df_filtered["firmness"] == user_input["firmness"]]
-    top40 = get_similar(df_filtered, X)
-    if top40.empty:
+    df_result = get_similar(df_filtered, X)
+    if df_result.empty:
         return pd.DataFrame()
-    return (top40.sort_values("similarity", ascending=False)
-            .groupby("product_name").first().reset_index().head(5))
+    return (df_result.sort_values("similarity", ascending=False)
+            .groupby("product_name").first().reset_index().head(10))
 
 
 def recommend_userclick(user_click_row, X, df_index):
@@ -53,8 +53,7 @@ def recommend_userclick(user_click_row, X, df_index):
     candidate_ids = df_filtered.index.to_numpy()
     X_candidates  = X[candidate_ids]
     # find index of clicked product
-    cols = df.columns
-    mask = (df[cols] == user_click_row[cols]).all(axis=1)
+    mask = df.eq(user_click_row).all(axis=1)
     if not mask.any():
         # fallback: match by product_name only
         mask = df["product_name"] == user_click_row["product_name"]
@@ -64,26 +63,25 @@ def recommend_userclick(user_click_row, X, df_index):
     df_result = df_filtered.copy()
     df_result["similarity"] = scores
     df_result = df_result.sort_values(by=["similarity","popularity_score"], ascending=[False,False])
-    top30 = df_result.head(30)
+    df_unique = df_result.drop_duplicates(subset=["product_name"], keep="first")
+    
+    top15 = df_unique.head(15).reset_index(drop=True)
 
-    result = (top30
-          .sort_values("similarity", ascending=False)
-          .groupby("product_name").first()
-          .reset_index())
+    return top15.sample(n=min(5, len(top15)), random_state=None)
 
-    return result.sample(n=min(5, len(result)), random_state=None)
 
-user_input = {
-    "category": "Lò xo",
-    "price_max": 10000000,
-    "length": 200,
-}
 
-result = recommend(user_input)
+def recommend_cold_start(df_index, price_min=None, price_max=None):
+    df_sorted = df_index.copy()
+    # lọc theo giá nếu có
+    if price_min is not None:
+        df_sorted = df_sorted[df_sorted["price"] >= price_min]
+    if price_max is not None:
+        df_sorted = df_sorted[df_sorted["price"] <= price_max]
+    if df_sorted.empty:
+        return pd.DataFrame()
+    df_sorted = df_sorted.sort_values(by="popularity_score", ascending=False)
+    df_unique = df_sorted.drop_duplicates(subset=["category", "product_name"])
+    top_cold_start = df_unique.groupby("category").head(3)
+    return top_cold_start.reset_index(drop=True)
 
-# ===== Hiển thị kết quả =====
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.width', None)
-pd.set_option('display.max_colwidth', None)
-print(result[['product_name', 'brand', 'category', 'material_type', 'firmness', 'price', 'width', 'length', 'thickness', 'image_url', 'link']])

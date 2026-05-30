@@ -15,8 +15,8 @@ STYLES = """
     @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
     html, body, [class*="css"] { font-family: 'Be Vietnam Pro', sans-serif; }
 
-    .main-title { font-size: 2.2rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.25rem; }
-    .sub-title   { font-size: 1rem; color: #6b7280; margin-bottom: 2rem; }
+    .main-title { font-size: 2.2rem; font-weight: 700; color: #0ea5e9; margin-bottom: 0.25rem; }
+    .sub-title   { font-size: 1rem; color: #38bdf8; margin-bottom: 2rem; }
 
     .filter-section { background: #f8fafc; border-radius: 16px; padding: 1.5rem; border: 1px solid #e2e8f0; }
     .section-label  { font-size: 0.78rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
@@ -59,7 +59,7 @@ STYLES = """
     .btn-detail { display:block; text-align:center; background:#0ea5e9; color:#fff !important; text-decoration:none !important; border-radius:10px; padding:8px 0; font-size:0.88rem; font-weight:600; margin-top:4px; transition:background 0.15s; }
     .btn-detail:hover { background:#0284c7; }
 
-    .result-header { font-size:1.3rem; font-weight:700; color:#1e293b; margin-bottom:1.25rem; display:flex; align-items:center; gap:8px; }
+    .result-header { font-size:1.3rem; font-weight:700; color:#0ea5e9; margin-bottom:1.25rem; display:flex; align-items:center; gap:8px; }
     .result-count  { background:#0ea5e9; color:#fff; font-size:0.8rem; border-radius:999px; padding:2px 10px; font-weight:600; }
 
     .section-divider { border:none; border-top:2px dashed #e2e8f0; margin: 2rem 0 1.5rem; }
@@ -107,7 +107,7 @@ def get_similar(df_filtered, X):
     df_result["similarity"] = scores
     df_result = df_result[df_result.index != query_id]
     df_result = df_result.sort_values(by=["similarity","popularity_score"], ascending=[False,False])
-    return df_result.head(40)
+    return df_result
 
 
 def recommend(user_input, X, df_index):
@@ -121,16 +121,16 @@ def recommend(user_input, X, df_index):
     if user_input.get("thickness"):
         df_filtered = df_filtered[df_filtered["thickness"] == user_input["thickness"]]
     if user_input.get("width"):
-        df_filtered = df_filtered[df_filtered["width"] <= user_input["width"]]
+        df_filtered = df_filtered[df_filtered["width"] == user_input["width"]]
     if user_input.get("length"):
-        df_filtered = df_filtered[df_filtered["length"] <= user_input["length"]]
+        df_filtered = df_filtered[df_filtered["length"] == user_input["length"]]
     if user_input.get("firmness") is not None:
         df_filtered = df_filtered[df_filtered["firmness"] == user_input["firmness"]]
-    top40 = get_similar(df_filtered, X)
-    if top40.empty:
+    df_result = get_similar(df_filtered, X)
+    if df_result.empty:
         return pd.DataFrame()
-    return (top40.sort_values("similarity", ascending=False)
-            .groupby("product_name").first().reset_index().head(5))
+    return (df_result.sort_values("similarity", ascending=False)
+            .groupby("product_name").first().reset_index().head(10))
 
 
 def recommend_userclick(user_click_row, X, df_index):
@@ -139,8 +139,7 @@ def recommend_userclick(user_click_row, X, df_index):
     candidate_ids = df_filtered.index.to_numpy()
     X_candidates  = X[candidate_ids]
     # find index of clicked product
-    cols = df.columns
-    mask = (df[cols] == user_click_row[cols]).all(axis=1)
+    mask = df.eq(user_click_row).all(axis=1)
     if not mask.any():
         # fallback: match by product_name only
         mask = df["product_name"] == user_click_row["product_name"]
@@ -150,14 +149,26 @@ def recommend_userclick(user_click_row, X, df_index):
     df_result = df_filtered.copy()
     df_result["similarity"] = scores
     df_result = df_result.sort_values(by=["similarity","popularity_score"], ascending=[False,False])
-    top30 = df_result.head(30)
+    df_unique = df_result.drop_duplicates(subset=["product_name"], keep="first")
+    
+    top15 = df_unique.head(15).reset_index(drop=True)
 
-    result = (top30
-          .sort_values("similarity", ascending=False)
-          .groupby("product_name").first()
-          .reset_index())
+    return top15.sample(n=min(5, len(top15)), random_state=None)
 
-    return result.sample(n=min(5, len(result)), random_state=None)
+
+def recommend_cold_start(df_index, price_min=None, price_max=None):
+    df_sorted = df_index.copy()
+    # lọc theo giá nếu có
+    if price_min is not None:
+        df_sorted = df_sorted[df_sorted["price"] >= price_min]
+    if price_max is not None:
+        df_sorted = df_sorted[df_sorted["price"] <= price_max]
+    if df_sorted.empty:
+        return pd.DataFrame()
+    df_sorted = df_sorted.sort_values(by="popularity_score", ascending=False)
+    df_unique = df_sorted.drop_duplicates(subset=["category", "product_name"])
+    top_cold_start = df_unique.groupby("category").head(3)
+    return top_cold_start.reset_index(drop=True)
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -243,19 +254,25 @@ def render_card(row, hero=False):
 
 # ── Session state ────────────────────────────────────────────────────────────
 if "page" not in st.session_state:
-    st.session_state.page = "search"          # "search" | "detail"
+    st.session_state.page = "search"
 if "search_results" not in st.session_state:
     st.session_state.search_results = None
 if "selected_product" not in st.session_state:
     st.session_state.selected_product = None
 if "related_products" not in st.session_state:
     st.session_state.related_products = None
+if "is_cold_start" not in st.session_state:
+    st.session_state.is_cold_start = False
 
 
 # ── Load data ────────────────────────────────────────────────────────────────
 try:
     X, df_index = load_data()
     data_loaded = True
+    # Auto-load cold start on first visit
+    if st.session_state.search_results is None and st.session_state.page == "search":
+        st.session_state.search_results = recommend_cold_start(df_index)
+        st.session_state.is_cold_start  = True
 except Exception as e:
     st.error(f"❌ Không thể tải dữ liệu: {e}")
     st.info("Hãy đảm bảo `data/final/feature_matrix.npz` và `data/final/mattresses_index.csv` tồn tại.")
@@ -313,9 +330,10 @@ elif data_loaded and st.session_state.page == "search":
     col_filter, col_results = st.columns([1, 2.4], gap="large")
 
     with col_filter:
-        st.markdown('<div class="filter-section">', unsafe_allow_html=True)
-        st.markdown("#### 🔍 Bộ lọc tìm kiếm")
-        st.markdown("---")
+        st.markdown("""
+        <div style="font-size:1.25rem;font-weight:800;color:#0ea5e9;letter-spacing:0.01em;margin-bottom:0.5rem">🔍 Bộ lọc tìm kiếm</div>
+        <hr style="border:none;border-top:2px solid #0ea5e9;margin-bottom:1rem;opacity:0.3">
+        """, unsafe_allow_html=True)
 
         st.markdown('<div class="section-label">Loại nệm</div>', unsafe_allow_html=True)
         selected_category = st.selectbox("Loại nệm", categories, label_visibility="collapsed")
@@ -352,7 +370,6 @@ elif data_loaded and st.session_state.page == "search":
 
         st.markdown("<br>", unsafe_allow_html=True)
         search_btn = st.button("🔍 Tìm nệm phù hợp")
-        st.markdown("</div>", unsafe_allow_html=True)
 
     with col_results:
         if search_btn:
@@ -372,11 +389,25 @@ elif data_loaded and st.session_state.page == "search":
             if selected_firmness != "(Tất cả)":
                 user_input["firmness"]  = selected_firmness
 
-            with st.spinner("Đang tìm kiếm nệm phù hợp..."):
-                result = recommend(user_input, X, df_index)
-            st.session_state.search_results = result
+            # Kiểm tra xem có filter nào ngoài giá không
+            non_price_keys = {"category", "thickness", "width", "length", "firmness"}
+            has_non_price  = any(k in user_input for k in non_price_keys)
 
-        result = st.session_state.search_results
+            with st.spinner("Đang tìm kiếm nệm phù hợp..."):
+                if not has_non_price:
+                    # Cold start: chỉ lọc giá (hoặc không lọc gì)
+                    result = recommend_cold_start(
+                        df_index,
+                        price_min=user_input.get("price_min"),
+                        price_max=user_input.get("price_max"),
+                    )
+                else:
+                    result = recommend(user_input, X, df_index)
+            st.session_state.search_results  = result
+            st.session_state.is_cold_start   = not has_non_price
+
+        result        = st.session_state.search_results
+        is_cold_start = st.session_state.get("is_cold_start", False)
 
         if result is None:
             st.markdown("""
@@ -391,8 +422,9 @@ elif data_loaded and st.session_state.page == "search":
                 <div class="empty-state-text">Không tìm thấy sản phẩm phù hợp.<br>Hãy thử điều chỉnh lại bộ lọc.</div>
             </div>""", unsafe_allow_html=True)
         else:
+            header_label = "🏆 Nệm nổi bật theo danh mục" if is_cold_start else "Kết quả gợi ý"
             st.markdown(
-                f'<div class="result-header">Kết quả gợi ý <span class="result-count">{len(result)} nệm</span></div>',
+                f'<div class="result-header">{header_label} <span class="result-count">{len(result)} nệm</span></div>',
                 unsafe_allow_html=True)
             cols = st.columns(min(len(result), 3), gap="medium")
             for i, (_, row) in enumerate(result.iterrows()):
